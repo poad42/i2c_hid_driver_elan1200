@@ -1,7 +1,7 @@
 hid-multitouch
 ==============
 
-Overwrite of hid-multitouch driver for kernel v34.4.34.
+Overwrite of hid-multitouch driver for kernel v4.18.5.
 
 Run:
 
