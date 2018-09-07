@@ -1,0 +1,10 @@
+*.o
+*.ko
+*.cmd
+*.mod
+*.order
+*.mod.c
+*.symvers
+*.unsigned
+upstream/*
+41-hid-multitouch.rules
