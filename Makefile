@@ -1,16 +1,23 @@
-MODULE_NAME := hid-multitouch
+MOD=hid-multitouch
+obj-m += $(MOD).o
+obj-m += i2c-hid.o
+all:
+	@echo "Targets:"
+	@echo " build   - compiles module"
+	@echo " clean   - cleans the directory"
+	@echo " install - copies built module to /lib/modules/... - calls sudo"
+	@echo " reload  - unloads and load the module - calls sudo"
 
-obj-m			+= $(MODULE_NAME).o
-obj-m			+= i2c-hid.o
-
-KDIR := /lib/modules/$(shell uname -r)/build
-PWD := $(shell pwd)
-default:
-	$(MAKE) -C $(KDIR) -Werror=implicit-function-declaration SUBDIRS=$(PWD) modules
-
-install: $(MODULE_NAME).ko $(MODULE_NAME).mod.c
-	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) modules_install
-
+build: $(MOD).ko
+$(MOD).ko:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+ 
 clean:
-	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) clean
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
 
+install: $(MOD).ko
+	sudo cp -v $(MOD).ko /lib/modules/$(shell uname -r)/kernel/drivers/hid/
+
+reload: $(MOD).ko
+	sudo modprobe -rv $(MOD)
+	sudo modprobe -v $(MOD)
