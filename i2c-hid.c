@@ -1236,12 +1236,7 @@ static int i2c_hid_resume(struct device *dev)
 
 	enable_irq(client->irq);
 
-	/* Instead of resetting device, simply powers the device on. This
-	 * solves "incomplete reports" on Raydium devices 2386:3118 and
-	 * 2386:4B33 and fixes various SIS touchscreens no longer sending
-	 * data after a suspend/resume.
-	 */
-	ret = i2c_hid_set_power(client, I2C_HID_PWR_ON);
+	ret = i2c_hid_hwreset(client);
 	if (ret)
 		return ret;
 
